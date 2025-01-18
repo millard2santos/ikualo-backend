@@ -11,7 +11,7 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
-  findOne(id: number) {
+  findOne(id: string) {
     const user = this.userModel.findById(id);
     return user;
   }
@@ -19,7 +19,7 @@ export class UsersService {
     const newUser = new this.userModel(createUserDto);
     return newUser.save();
   }
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto) {
     return this.userModel.findByIdAndUpdate(
       id,
       {
@@ -35,7 +35,7 @@ export class UsersService {
       },
     );
   }
-  delete(id: number) {
+  delete(id: string) {
     return this.userModel.findByIdAndDelete(id);
   }
 }

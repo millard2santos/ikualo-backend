@@ -16,8 +16,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @Get(':id')
   // @MessagePattern('findOneUser')
-  findOne(@Param() params: any) {
-    return this.usersService.findOne(params.id);
+  findOne(@Param('id') id: string) {
+    return this.usersService.findOne(id);
   }
 
   @Post()
@@ -28,12 +28,12 @@ export class UsersController {
 
   @Put(':id')
   // @MessagePattern('updateUser')
-  update(@Param() params: any, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(params.id, updateUserDto);
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(id, updateUserDto);
   }
   @Delete(':id')
   // @MessagePattern('deleteUser')
-  delete(@Param() params: any) {
-    return this.usersService.delete(params.id);
+  delete(@Param('id') id: string) {
+    return this.usersService.delete(id);
   }
 }

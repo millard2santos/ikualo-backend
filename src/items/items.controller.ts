@@ -1,35 +1,42 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 
-@Controller()
+@Controller('items')
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
-  @MessagePattern('createItem')
-  create(@Payload() createItemDto: CreateItemDto) {
+  @Post()
+  create(@Body() createItemDto: CreateItemDto) {
     return this.itemsService.create(createItemDto);
   }
 
-  @MessagePattern('findAllItems')
+  @Get()
   findAll() {
     return this.itemsService.findAll();
   }
 
-  @MessagePattern('findOneItem')
-  findOne(@Payload() id: number) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     return this.itemsService.findOne(id);
   }
 
-  @MessagePattern('updateItem')
-  update(@Payload() updateItemDto: UpdateItemDto) {
-    return this.itemsService.update(updateItemDto.id, updateItemDto);
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
+    return this.itemsService.update(id, updateItemDto);
   }
 
-  @MessagePattern('removeItem')
-  remove(@Payload() id: number) {
+  @Delete(':id')
+  remove(@Param('id') id: string) {
     return this.itemsService.remove(id);
   }
 }
