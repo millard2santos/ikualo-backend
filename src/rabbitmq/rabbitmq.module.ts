@@ -5,7 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     ClientsModule.register([
       {
-        name: 'IkualoService',
+        name: 'Ikualo_Service',
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://localhost:5672'],
