@@ -5,10 +5,12 @@ import { Document } from 'mongoose';
 export class Transaction extends Document {
   @Prop({ required: true })
   userId: string;
-  @Prop({ required: true })
+  @Prop({ required: false })
   targetId: string;
   @Prop({ required: true })
   amount: number;
+  @Prop({ required: true })
+  type: string;
 }
 
 export const TransactionsSchema = SchemaFactory.createForClass(Transaction);

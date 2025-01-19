@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './users.schema';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
-import { TransactionType, UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -19,20 +18,18 @@ export class UsersService {
     const newUser = new this.userModel(createUserDto);
     return newUser.save();
   }
-  update(id: string, updateUserDto: UpdateUserDto) {
+  deposit(id: string, amount: number) {
     return this.userModel.findByIdAndUpdate(
       id,
-      {
-        $inc: {
-          balance:
-            updateUserDto.transactionType === TransactionType.INCREASE
-              ? updateUserDto.amount
-              : updateUserDto.amount * -1,
-        },
-      },
-      {
-        new: true,
-      },
+      { $inc: { balance: amount } },
+      { new: true },
+    );
+  }
+  withdraw(id: string, amount: number) {
+    return this.userModel.findByIdAndUpdate(
+      id,
+      { $inc: { balance: amount * -1 } },
+      { new: true },
     );
   }
   delete(id: string) {
