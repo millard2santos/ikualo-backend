@@ -1,36 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
-import { UpdateItemDto } from './dto/update-item.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Item } from './entities/item.entity';
 import { Model } from 'mongoose';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ItemsService {
   constructor(
     @InjectModel(Item.name) private readonly itemsService: Model<Item>,
+    private readonly userService: UsersService,
   ) {}
   create(createItemDto: CreateItemDto) {
-    const newItem = new this.itemsService(createItemDto);
+    const newItem = new this.itemsService({ name: createItemDto.name });
+    try {
+      this.userService.addColor(createItemDto.userId, newItem.id);
+    } catch (error) {
+      console.log(error);
+    }
     return newItem.save();
   }
 
-  findAll() {
-    const items = this.itemsService.find();
-    return items;
+  async findOne(id: string) {
+    const color = await this.itemsService.findById(id, { name: 1 }).lean();
+    return color.name;
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} item`;
-  }
-
-  update(id: string, updateItemDto: UpdateItemDto) {
-    return this.itemsService.findByIdAndUpdate(id, updateItemDto, {
-      new: true,
-    });
-  }
-
-  remove(id: string) {
-    return this.itemsService.findByIdAndDelete(id);
-  }
+  // update(id: string, updateItemDto: UpdateItemDto) {
+  //   return this.itemsService.findByIdAndUpdate(id, updateItemDto, {
+  //     new: true,
+  //   });
+  // }
 }

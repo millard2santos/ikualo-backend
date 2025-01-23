@@ -42,6 +42,23 @@ export class UsersService {
     });
   }
 
+  async addColor(id: string, colorId: string) {
+    console.log(id, colorId);
+
+    const user = await this.userModel.findByIdAndUpdate(
+      id,
+      { $push: { colors: colorId } },
+      { new: true },
+    );
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+    console.log(user.colors);
+
+    return user;
+  }
+
   create(createUserDto: CreateUserDto) {
     const newUser = new this.userModel(createUserDto);
     return newUser.save();
@@ -59,8 +76,5 @@ export class UsersService {
       { $inc: { balance: amount * -1 } },
       { new: true },
     );
-  }
-  delete(id: string) {
-    return this.userModel.findByIdAndDelete(id);
   }
 }

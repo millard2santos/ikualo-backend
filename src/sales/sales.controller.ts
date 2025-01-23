@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { SalesService } from './sales.service';
-import { Sale } from './entities/sales.entity';
+import { CreateSaleDto } from './dto/createSale.dto';
 
 @Controller('sales')
 export class SalesController {
@@ -11,7 +11,7 @@ export class SalesController {
   }
 
   @Post()
-  create(@Body() createSale: Sale) {
-    return this.salesService.createSale(createSale);
+  create(@Body() createSaleDto: CreateSaleDto) {
+    return this.salesService.createSale(createSaleDto);
   }
 }
