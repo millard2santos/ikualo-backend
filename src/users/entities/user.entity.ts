@@ -9,8 +9,16 @@ export class User extends Document {
   email: string;
   @Prop({ required: true })
   password: string;
+  @Prop()
+  avatar: string;
   @Prop({ default: 0 })
   balance: number;
+  @Prop([String])
+  colors: string[];
+  @Prop([String])
+  transactions: string[];
+  @Prop([String])
+  friends: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

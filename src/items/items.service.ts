@@ -25,10 +25,6 @@ export class ItemsService {
   }
 
   update(id: string, updateItemDto: UpdateItemDto) {
-    console.log(id);
-
-    console.log(updateItemDto);
-
     return this.itemsService.findByIdAndUpdate(id, updateItemDto, {
       new: true,
     });

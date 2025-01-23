@@ -14,7 +14,7 @@ export class TransactionsService {
   ) {}
 
   findAll(id: string) {
-    return this.transactionService.find({ _id: id }).exec();
+    return this.transactionService.find({ userId: id }).exec();
   }
 
   async create(createTransaction: CreateTransactionDto) {
