@@ -4,6 +4,7 @@ import { Transaction, TransactionsSchema } from './entities/transaction.entity';
 import { TransactionsController } from './transactions.controller';
 import { TransactionsService } from './transactions.service';
 import { UsersModule } from 'src/users/users.module';
+import { SalesModule } from 'src/sales/sales.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { UsersModule } from 'src/users/users.module';
       { name: Transaction.name, schema: TransactionsSchema },
     ]),
     UsersModule,
+    SalesModule,
   ],
   controllers: [TransactionsController],
   providers: [TransactionsService],

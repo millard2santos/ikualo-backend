@@ -1,26 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-class Sellers {
-  sellerId: string;
-  name: string;
-  price: number;
-}
-
 @Schema()
 export class Sale {
   @Prop({ required: true })
-  name: string;
-  @Prop({ type: [Sellers], required: true })
-  sellers: Sellers[];
+  colorId: string;
+  @Prop({ required: true })
+  colorName: string;
+  @Prop({ required: true })
+  sellerName: string;
 
-  // @Prop({ required: true })
-  // price: number;
+  @Prop({ required: true })
+  sellerId: string;
 
-  // @Prop({ required: true })
-  // color: string;
-
-  // @Prop({ required: true })
-  // userId: string;
+  @Prop({ required: true })
+  price: number;
 }
 
 export const SaleSchema = SchemaFactory.createForClass(Sale);

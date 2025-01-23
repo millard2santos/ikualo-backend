@@ -12,7 +12,7 @@ export class ItemsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.itemsService.findOne(id);
+  getItem(@Param('id') id: string) {
+    return this.itemsService.getItem(id);
   }
 }

@@ -1,6 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
+export class ColorsSale {
+  color: string;
+  price: number;
+}
+
 @Schema()
 export class User extends Document {
   @Prop({ required: true })
@@ -15,6 +20,8 @@ export class User extends Document {
   balance: number;
   @Prop([String])
   colors: string[];
+  @Prop({ type: [ColorsSale] })
+  colorsSale: ColorsSale[];
   @Prop([String])
   transactions: string[];
   @Prop([String])

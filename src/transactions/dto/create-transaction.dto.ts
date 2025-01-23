@@ -10,7 +10,8 @@ import {
 export enum TransactionType {
   DEPOSIT = 'deposit',
   WITHDRAW = 'withdraw',
-  TRANSFER = 'transfer',
+  PURCHASE = 'purchase',
+  SALE = 'sale',
 }
 
 export class CreateTransactionDto {
@@ -20,7 +21,11 @@ export class CreateTransactionDto {
 
   @IsOptional()
   @IsMongoId()
-  targetId: string;
+  saleId: string;
+
+  @IsOptional()
+  @IsMongoId()
+  sellerId: string;
 
   @IsInt()
   @Min(1)

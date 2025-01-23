@@ -1,5 +1,6 @@
 export class CreateSaleDto {
-  saleName: string;
+  colorId: string;
+  colorName: string;
   sellerName: string;
   sellerId: string;
   price: number;

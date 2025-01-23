@@ -16,47 +16,61 @@ export class UsersService {
         password: 0,
         __v: 0,
       })
+      .lean()
       .exec();
     return user;
   }
-  getFriend(id: string) {
-    const user = this.userModel
-      .findById(id, { name: 1, avatar: 1, email: 1 })
+
+  async addSale(id: string, saleId: string) {
+    const user = await this.userModel
+      .findByIdAndUpdate(id, { $push: { colorsSale: saleId } }, { new: true })
       .exec();
-    return user;
-  }
-  async getUserFriends(id: string) {
-    const user = await this.userModel.findById(id, { friends: 1 }).exec();
-    return await Promise.all(user.friends.map((id) => this.getFriend(id)));
-  }
-  addFriend(id: string, friendId: string) {
-    return this.userModel.findByIdAndUpdate(
-      id,
-      { $push: { friends: friendId } },
-      { new: true },
-    );
-  }
-  deleteFriend(id: string, friendId: string) {
-    return this.userModel.findByIdAndUpdate(id, {
-      $pull: { friends: friendId },
-    });
-  }
-
-  async addColor(id: string, colorId: string) {
-    console.log(id, colorId);
-
-    const user = await this.userModel.findByIdAndUpdate(
-      id,
-      { $push: { colors: colorId } },
-      { new: true },
-    );
 
     if (!user) {
       throw new Error('User not found');
     }
-    console.log(user.colors);
 
     return user;
+  }
+
+  async addColor(id: string, colorId: string) {
+    const user = await this.userModel
+      .findByIdAndUpdate(id, { $push: { colors: colorId } }, { new: true })
+      .exec();
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user;
+  }
+
+  async removeColor(id: string, colorId: string) {
+    const user = await this.userModel
+      .findByIdAndUpdate(id, { $pull: { colors: colorId } }, { new: true })
+      .exec();
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user;
+  }
+
+  removeSale(id: string, saleId: string) {
+    return this.userModel
+      .findByIdAndUpdate(id, { $pull: { colorsSale: saleId } }, { new: true })
+      .exec();
+  }
+
+  addTransaction(id: string, transactionId: string) {
+    return this.userModel
+      .findByIdAndUpdate(
+        id,
+        { $push: { transactions: transactionId } },
+        { new: true },
+      )
+      .exec();
   }
 
   create(createUserDto: CreateUserDto) {
@@ -64,17 +78,13 @@ export class UsersService {
     return newUser.save();
   }
   deposit(id: string, amount: number) {
-    return this.userModel.findByIdAndUpdate(
-      id,
-      { $inc: { balance: amount } },
-      { new: true },
-    );
+    return this.userModel
+      .findByIdAndUpdate(id, { $inc: { balance: amount } }, { new: true })
+      .exec();
   }
   withdraw(id: string, amount: number) {
-    return this.userModel.findByIdAndUpdate(
-      id,
-      { $inc: { balance: amount * -1 } },
-      { new: true },
-    );
+    return this.userModel
+      .findByIdAndUpdate(id, { $inc: { balance: amount * -1 } }, { new: true })
+      .exec();
   }
 }

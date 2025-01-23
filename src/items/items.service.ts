@@ -21,9 +21,9 @@ export class ItemsService {
     return newItem.save();
   }
 
-  async findOne(id: string) {
-    const color = await this.itemsService.findById(id, { name: 1 }).lean();
-    return color.name;
+  async getItem(id: string) {
+    const color = await this.itemsService.findById(id).lean();
+    return color;
   }
 
   // update(id: string, updateItemDto: UpdateItemDto) {

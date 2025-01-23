@@ -14,4 +14,9 @@ export class TransactionsController {
   create(@Body() createTransactionDto: CreateTransactionDto) {
     return this.transactionService.create(createTransactionDto);
   }
+
+  @Post('/buy')
+  createSale(@Body() createTransactionDto: CreateTransactionDto) {
+    return this.transactionService.buyItem(createTransactionDto);
+  }
 }
