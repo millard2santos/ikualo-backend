@@ -6,7 +6,7 @@ export class Transaction extends Document {
   @Prop({ required: true })
   userId: string;
   @Prop({ required: false })
-  targetId: string;
+  sellerId: string;
   @Prop({ required: true })
   amount: number;
   @Prop({ required: true })

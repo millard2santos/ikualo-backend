@@ -49,6 +49,7 @@ export class SalesService {
   async createSale(createSale: CreateSaleDto) {
     const newSale = new this.saleModel(createSale);
     this.usersService.addSale(createSale.sellerId, newSale.id);
+    this.usersService.removeColor(createSale.sellerId, createSale.colorId);
     return newSale.save();
   }
 

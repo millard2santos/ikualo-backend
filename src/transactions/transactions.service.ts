@@ -44,13 +44,15 @@ export class TransactionsService {
   }
 
   async buyItem(buyTransaction: CreateTransactionDto) {
+    const saleId = buyTransaction.saleId;
+    delete buyTransaction.saleId;
     const transaction = await this.create({
       ...buyTransaction,
       type: TransactionType.SALE,
     });
 
     try {
-      const itemOnSale = await this.salesService.getSale(buyTransaction.saleId);
+      const itemOnSale = await this.salesService.getSale(saleId);
       // Buyer User
       await this.userService.addColor(
         buyTransaction.userId,
@@ -71,10 +73,7 @@ export class TransactionsService {
         buyTransaction.sellerId,
         itemOnSale.colorId,
       );
-      await this.userService.removeSale(
-        buyTransaction.sellerId,
-        buyTransaction.saleId,
-      );
+      await this.userService.removeSale(buyTransaction.sellerId, saleId);
       await this.userService.addTransaction(
         buyTransaction.sellerId,
         transaction.id,
@@ -84,7 +83,7 @@ export class TransactionsService {
         buyTransaction.amount,
       );
 
-      await this.salesService.deleteSale(buyTransaction.saleId);
+      await this.salesService.deleteSale(saleId);
     } catch (error) {
       console.log(error);
       throw new Error('Error buying item');

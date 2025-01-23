@@ -3,12 +3,33 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
+  async register(createUserDto: CreateUserDto) {
+    const user = await this.userModel.findOne({ email: createUserDto.email });
+    if (user) {
+      throw new Error('Email already in use');
+    }
+
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 15);
+    return this.create({ ...createUserDto, password: hashedPassword });
+  }
+  async login({ email, password }) {
+    const user = await this.userModel.findOne({ email });
+    if (!user) {
+      throw new Error('Email or password incorrect');
+    }
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      throw new Error('Email or password incorrect');
+    }
+    return user;
+  }
 
   getUser(id: string) {
     const user = this.userModel

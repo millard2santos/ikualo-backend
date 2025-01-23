@@ -11,6 +11,14 @@ export class UsersController {
     return this.usersService.getUser(id);
   }
 
+  @Post('/login')
+  login(@Body() { email, password }) {
+    return this.usersService.login({ email, password });
+  }
+  @Post('/register')
+  register(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.register(createUserDto);
+  }
   @Post()
   // @MessagePattern('createUser')
   create(@Body() createUserDto: CreateUserDto) {
